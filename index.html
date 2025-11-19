@@ -1,24 +1,79 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <title>Email Builder</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Builder - Prototype</title>
+    <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
-  <div id="container">
-    <div id="sidebar">
-      <h3>Blokken</h3>
-      <div class="block" draggable="true">Beste [naam],</div>
-      <div class="block" draggable="true">Bedankt voor je bericht.</div>
-      <div class="block" draggable="true">Met vriendelijke groet,</div>
-      <div class="block" draggable="true">[Jouw naam]</div>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Email Builder</h1>
+            <div class="header-controls">
+                <select id="templateSelector">
+                    <option value="">Kies een template...</option>
+                </select>
+                <button id="saveTemplateBtn">Opslaan als Template</button>
+                <button id="copyBtn">Kopieer E-mail</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h3>Blokken Bibliotheek</h3>
+                    <div class="block-management">
+                        <input type="text" id="newBlockText" placeholder="Nieuwe blok tekst...">
+                        <button id="addBlockBtn">+ Toevoegen</button>
+                    </div>
+                </div>
+                <div class="blocks-list" id="blocksList">
+                    <!-- Blocks will be loaded here -->
+                </div>
+            </aside>
+
+            <!-- Canvas -->
+            <main class="canvas">
+                <div class="canvas-header">
+                    <h3>E-mail Canvas</h3>
+                    <div class="canvas-controls">
+                        <button id="clearCanvasBtn">Leegmaken</button>
+                    </div>
+                </div>
+                <div class="email-content" id="emailCanvas">
+                    <p class="empty-state">Sleep blokken hierheen om je e-mail te bouwen</p>
+                </div>
+            </main>
+        </div>
     </div>
-    <div id="canvas">
-      <h3>Email</h3>
+
+    <!-- Modals -->
+    <div id="saveTemplateModal" class="modal">
+        <div class="modal-content">
+            <h3>Template Opslaan</h3>
+            <input type="text" id="templateName" placeholder="Template naam...">
+            <div class="modal-actions">
+                <button id="confirmSaveBtn">Opslaan</button>
+                <button id="cancelSaveBtn">Annuleren</button>
+            </div>
+        </div>
     </div>
-  </div>
-  <button id="copyBtn">Kopieer naar Gmail</button>
-  <script src="app.js"></script>
+
+    <div id="textEditorModal" class="modal">
+        <div class="modal-content">
+            <h3>Tekst Bewerken</h3>
+            <textarea id="textEditor" rows="6"></textarea>
+            <div class="modal-actions">
+                <button id="saveTextBtn">Opslaan</button>
+                <button id="cancelTextBtn">Annuleren</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/app.js"></script>
 </body>
 </html>
