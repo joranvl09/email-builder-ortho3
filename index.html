@@ -1,286 +1,79 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Builder - Prototype</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Email Builder</h1>
+            <div class="header-controls">
+                <select id="templateSelector">
+                    <option value="">Kies een template...</option>
+                </select>
+                <button id="saveTemplateBtn">Opslaan als Template</button>
+                <button id="copyBtn">Kopieer E-mail</button>
+            </div>
+        </header>
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f5f5f5;
-    height: 100vh;
-}
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h3>Blokken Bibliotheek</h3>
+                    <div class="block-management">
+                        <input type="text" id="newBlockText" placeholder="Nieuwe blok tekst...">
+                        <button id="addBlockBtn">+ Toevoegen</button>
+                    </div>
+                </div>
+                <div class="blocks-list" id="blocksList">
+                    <!-- Blocks will be loaded here -->
+                </div>
+            </aside>
 
-.app-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-}
+            <!-- Canvas -->
+            <main class="canvas">
+                <div class="canvas-header">
+                    <h3>E-mail Canvas</h3>
+                    <div class="canvas-controls">
+                        <button id="clearCanvasBtn">Leegmaken</button>
+                    </div>
+                </div>
+                <div class="email-content" id="emailCanvas">
+                    <p class="empty-state">Sleep blokken hierheen om je e-mail te bouwen</p>
+                </div>
+            </main>
+        </div>
+    </div>
 
-/* Header */
-.header {
-    background: white;
-    padding: 1rem 2rem;
-    border-bottom: 1px solid #ddd;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
+    <!-- Modals -->
+    <div id="saveTemplateModal" class="modal">
+        <div class="modal-content">
+            <h3>Template Opslaan</h3>
+            <input type="text" id="templateName" placeholder="Template naam...">
+            <div class="modal-actions">
+                <button id="confirmSaveBtn">Opslaan</button>
+                <button id="cancelSaveBtn">Annuleren</button>
+            </div>
+        </div>
+    </div>
 
-.header h1 {
-    color: #2c3e50;
-    font-size: 1.5rem;
-}
+    <div id="textEditorModal" class="modal">
+        <div class="modal-content">
+            <h3>Tekst Bewerken</h3>
+            <textarea id="textEditor" rows="6"></textarea>
+            <div class="modal-actions">
+                <button id="saveTextBtn">Opslaan</button>
+                <button id="cancelTextBtn">Annuleren</button>
+            </div>
+        </div>
+    </div>
 
-.header-controls {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-}
-
-.header-controls select,
-.header-controls button {
-    padding: 0.5rem 1rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background: white;
-    cursor: pointer;
-}
-
-.header-controls button {
-    background: #3498db;
-    color: white;
-    border: none;
-}
-
-.header-controls button:hover {
-    background: #2980b9;
-}
-
-/* Main Content */
-.main-content {
-    display: flex;
-    flex: 1;
-    overflow: hidden;
-}
-
-/* Sidebar */
-.sidebar {
-    width: 300px;
-    background: white;
-    border-right: 1px solid #ddd;
-    padding: 1rem;
-    overflow-y: auto;
-}
-
-.sidebar-header {
-    margin-bottom: 1rem;
-}
-
-.sidebar-header h3 {
-    margin-bottom: 1rem;
-    color: #2c3e50;
-}
-
-.block-management {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.block-management input {
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.block-management button {
-    padding: 0.5rem;
-    background: #27ae60;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.block-management button:hover {
-    background: #219a52;
-}
-
-/* Blocks */
-.block-item {
-    background: #f8f9fa;
-    border: 1px solid #e9ecef;
-    border-radius: 6px;
-    padding: 1rem;
-    margin-bottom: 0.5rem;
-    cursor: grab;
-    user-select: none;
-    transition: all 0.2s ease;
-}
-
-.block-item:hover {
-    background: #e9ecef;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.block-item.dragging {
-    opacity: 0.5;
-}
-
-.block-actions {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-}
-
-.block-actions button {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.8rem;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-.block-actions .delete-btn {
-    background: #e74c3c;
-    color: white;
-}
-
-/* Canvas */
-.canvas {
-    flex: 1;
-    background: white;
-    padding: 1rem;
-    overflow-y: auto;
-}
-
-.canvas-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #ddd;
-}
-
-.canvas-header h3 {
-    color: #2c3e50;
-}
-
-.canvas-controls button {
-    padding: 0.5rem 1rem;
-    background: #e74c3c;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.canvas-controls button:hover {
-    background: #c0392b;
-}
-
-.email-content {
-    min-height: 400px;
-    border: 2px dashed #bdc3c7;
-    border-radius: 8px;
-    padding: 2rem;
-}
-
-.empty-state {
-    text-align: center;
-    color: #7f8c8d;
-    font-style: italic;
-}
-
-/* Email Blocks */
-.email-block {
-    background: #f8f9fa;
-    border: 1px solid #e9ecef;
-    border-radius: 6px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.email-block:hover {
-    background: #e9ecef;
-    border-color: #3498db;
-}
-
-.email-block:hover .block-actions {
-    opacity: 1;
-}
-
-.email-block .block-actions {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-}
-
-/* Modals */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 1000;
-}
-
-.modal-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    min-width: 400px;
-}
-
-.modal-content h3 {
-    margin-bottom: 1rem;
-    color: #2c3e50;
-}
-
-.modal-content input,
-.modal-content textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 1rem;
-    font-family: inherit;
-}
-
-.modal-actions {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: flex-end;
-}
-
-.modal-actions button {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.modal-actions button:first-child {
-    background: #3498db;
-    color: white;
-}
-
-.modal-actions button:last-child {
-    background: #95a5a6;
-    color: white;
-}
+    <script src="scripts/app.js"></script>
+</body>
+</html>
